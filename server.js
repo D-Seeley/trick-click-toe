@@ -18,7 +18,7 @@ let
   playerTwo, 
   game = true,
   initialBoard = [0,0,0,0,0,0,0,0,0],
-  serverBoard = initialBoard;
+  serverBoard = [...initialBoard];
 
 let users = [];
 
@@ -59,18 +59,20 @@ io.on('connection', (socket)=> {
     console.log(`${socket.id} joined socket.io`);
     addUser(id);
     socket.emit('joined', {users, id, serverBoard})
-    socket.broadcast.emit('peerJoined', users);
+    // socket.broadcast.emit('peerJoined', users);
 
     socket.on('gameStatus', (status)=> {
       game = status;
-      io.emit('gameStatus', game);
+      socket.broadcast.emit('gameStatus', {game, serverBoard});
+      socket.emit('gameStatus', {game, serverBoard});
     })
 
     socket.on('resetGame', ()=> {
       game = true;
-      serverBoard = initialBoard;
-      io.emit('gameStatus', true)
-      io.emit('move', serverBoard);
+      serverBoard = [0,0,0,0,0,0,0,0,0];
+      socket.broadcast.emit('gameStatus', {game: true, serverBoard});
+      socket.emit('gameStatus', {game: true, serverBoard});
+      // io.emit('move', );
       // socket.emit('move', serverBoard);
     })
 
@@ -94,10 +96,11 @@ io.on('connection', (socket)=> {
       serverBoard = board;
         if (!board.includes(0)) {
           socket.broadcast.emit('gameOver');
-          socket.emit('gameOver');
+          // socket.emit('gameOver');
         }
         console.log(board);
         socket.broadcast.emit('move', board);
+        socket.emit('i moved')
       }
     })
 
