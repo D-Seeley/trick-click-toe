@@ -9,6 +9,7 @@ const port = process.env.port || 1337;
 
 //Static an API Routing
 app.use(express.static(path.join(__dirname, './public')));
+app.get('/', (req, res, next)=> res.sendfile(path.join(__dirname, 'public', 'index.htm')));
 
 //Controle players
 
