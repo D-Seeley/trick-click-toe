@@ -5,7 +5,7 @@ const io = require('socket.io')(server);
 
 // const ExpressPeerServer = require('peer').ExpressPeerServer;
 const path = require('path');
-const port = process.env.port || 1337;
+const port = process.env.PORT || 1337;
 
 //Static an API Routing
 app.use(express.static(path.join(__dirname, './public')));
