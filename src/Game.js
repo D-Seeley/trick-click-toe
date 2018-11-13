@@ -6,24 +6,10 @@ const socket = io();
 //import game logic
 import logic from './logic';
 
-const tds = $('td');
-console.log(tds);
-// const t1 = $("#1");
-// const t2 = $('#2');
-// const t3 = $('#3');
-// const t4 = $('#4');
-// const t5 = $('#5');
-// const t6 = $('#6');
-// const t7 = $('#7');
-// const t8 = $('#8');
-// const t9 = $('#9');
-
-
-//SocketLogic 
-let p1, p2;
-let playerOne = $('#playerOneTitle');
-let playerTwo = $('#playerTwoTitle');
-let playersWaiting = $('#playersWaiting');
+// let p1, p2;
+// let playerOne = $('#playerOneTitle');
+// let playerTwo = $('#playerTwoTitle');
+// let playersWaiting = $('#playersWaiting');
 
 const startingBoard = [0, 0, 0, 0, 0, 0, 0, 0, 0];
 const initialState = {
@@ -31,7 +17,6 @@ const initialState = {
     _board: startingBoard,
     _game: true
 }
-
 
 export default class Game extends Component  {
     constructor() {
@@ -71,8 +56,12 @@ export default class Game extends Component  {
             
         })
 
-        socket.on('gameStatus', (game)=> {
-            this.setState({_game: game})
+        socket.on('gameStatus', ({game, serverBoard})=> {
+            this.setState({
+                _game: game, 
+                _board: serverBoard
+            });
+            console.log('game is: ', game, " serverBoard is: ", serverBoard)
         })
 
         socket.on('move', (serverBoard)=> {
@@ -83,22 +72,17 @@ export default class Game extends Component  {
             this.setState({_game: false}
         ));
 
-        //read board helper
-        //set board helper
+        // socket.on('peerJoined', (users)=> {
+        //     // console.log(`peer ${peerId} joined`);
+        //     this.setState({_users: users})
 
-        socket.on('peerJoined', (users)=> {
-            // console.log(`peer ${peerId} joined`);
-            this.setState({_users: users})
-
-            // if (users.length == 1) {
-            //     p2 = peerId;
-            //     playerTwo.text(`Player Two Online is ${peerId}`);
-            // } else {
-            //     // playersWaiting.text(`There are ${this.state.users.length - 1} Players watching.`);
-            // }
-        })
-
-        this.mapClickHandler(this.state._board);
+        //     // if (users.length == 1) {
+        //     //     p2 = peerId;
+        //     //     playerTwo.text(`Player Two Online is ${peerId}`);
+        //     // } else {
+        //     //     // playersWaiting.text(`There are ${this.state.users.length - 1} Players watching.`);
+        //     // }
+        // })
         
         $('#resetButton').on('click', ()=> {
             console.log('reset button clicked');
@@ -106,23 +90,32 @@ export default class Game extends Component  {
         });
     }
 
+    componentDidUpdate() {
+        this.mapClickHandler(this.state._board);
+    }
+
     resetGame() {
+        this.setState({_board: startingBoard});
         socket.emit('resetGame');
-        // socket.emit('gameStatus', true);
-        // this.setState({_board: startingBoard});
+        
     }
 
     mapClickHandler(board) {
         console.log(board)
         board.map((square, idx) => {
             let _square = $(`#${idx + 1}`);
+
+           
             
             _square.on('click', ()=> {
                 if (this.state._game) {
                     const randomNum = Math.floor(Math.random() * Math.floor(3));
+                    console.log('randomNum is ', randomNum)
                     board[idx] = randomNum;
-                    this.setState({_board: board});
-                    socket.emit('move', this.state._board);
+                    // this.setState({_board: board});
+                    console.log('swuare is: ', square, '_square -s: ', _square);
+                    this.setColor(randomNum, _square)
+                    socket.emit('move', board);
 
                     if (logic(this.state._board)) {
                         socket.emit('gameOver');
@@ -133,23 +126,27 @@ export default class Game extends Component  {
         });
     }
 
+    setColor(value, squareSelector) {
+        switch (value) {
+            case 0: 
+            return squareSelector.css("backgroundColor", "white");
+            case 1: 
+            return squareSelector.css("backgroundColor", "red")
+            case 2: 
+            return squareSelector.css("backgroundColor", "blue")
+        }
+    }
+
     mapColorToBoard(board) {
         board.map((square, idx) => {
             let _square = $(`#${idx + 1}`);
-            
-            switch (square) {
-                case 0: 
-                return _square.css("backgroundColor", "white");
-                case 1: 
-                return _square.css("backgroundColor", "red")
-                case 2: 
-                return _square.css("backgroundColor", "blue")
-            }
+            this.setColor(square, _square);
         })
     }
 
     render () {
         this.mapColorToBoard(this.state._board);
+  
 
         console.log('the state is: ', this.state);
         
