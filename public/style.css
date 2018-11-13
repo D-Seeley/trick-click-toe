@@ -28,3 +28,8 @@ h1 {
   .white {
     background-color: white;
   }
+
+  #gameOver {
+    color: red;
+    background-color: black;
+  }

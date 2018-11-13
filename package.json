@@ -14,17 +14,25 @@
     "fs": "0.0.1-security",
     "peer": "^0.2.10",
     "pg": "^7.4.3",
+    "react": "^16.5.0",
+    "react-dom": "^16.5.0",
     "socket.io": "^2.1.1",
     "webpack": "^4.16.5",
     "webpack-cli": "^3.1.0"
   },
   "devDependencies": {},
   "scripts": {
+    "postinstall": "npm run webpack",
     "test": "echo \"Error: no test specified\" && exit 1",
     "webpack": "./node_modules/webpack/bin/webpack.js",
     "start:dev": "npm run webpack -- --watch --mode=development & DATABASE_URL=postgres://localhost/my_db nodemon server.js --ignore src/ --ignore dist"
   },
   "keywords": [],
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "babel": {
+    "presets": [
+      "react"
+    ]
+  }
 }
