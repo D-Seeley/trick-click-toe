@@ -9,7 +9,7 @@
     "babel-polyfill": "^6.26.0",
     "babel-preset-env": "^1.7.0",
     "babel-preset-react": "^6.24.1",
-    "ecstatic": "^3.3.0",
+    "ecstatic": ">=3.3.2",
     "express": "^4.16.3",
     "fs": "0.0.1-security",
     "peer": "^0.2.10",
