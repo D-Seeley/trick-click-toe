@@ -146,21 +146,44 @@ export default class Game extends Component  {
 
     render () {
         this.mapColorToBoard(this.state._board);
-  
-
         console.log('the state is: ', this.state);
+
+        return (
+            <div id={'game'}>
+                <table>
+                    <tbody>
+                        <tr>
+                            <td id='1'></td>
+                            <td id='2' className="vert"></td>
+                            <td id='3'></td>
+                        </tr>
+                        <tr>
+                            <td id='4' className="hori"></td>
+                            <td id='5' className="vert hori"></td>
+                            <td id='6' className="hori"></td>
+                        </tr>
+                        <tr>
+                            <td id='7'></td>
+                            <td id='8' className="vert"></td>
+                            <td id='9'></td>
+                        </tr>
+                    </tbody>
+                </table>
+                <button id='resetButton'>Reset</button>
+            </div>
+        )
         
-        if (this.state._game) {
-            return (<hr />)
-        } else {
-            return (
-                <div>
-                <hr />
-                <h1 id="gameOver">Game Over</h1>
-                <hr />
-                </div>
-            )
-        }
+        // if (this.state._game) {
+        //     return (<hr />)
+        // } else {
+        //     return (
+        //         <div>
+        //         <hr />
+        //         <h1 id="gameOver">Game Over</h1>
+        //         <hr />
+        //         </div>
+        //     )
+        // }
         
     }
 }
