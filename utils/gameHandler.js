@@ -18,6 +18,8 @@ const games = [];
 //
 
 const handleRequestJoin = (gameRequest, user) => {
+    console.log('gameRequest is, ', gameRequest)
+
     switch (gameRequest.type) {
         case HOST_PUBLIC_GAME:
             return games.push(new Game(user));

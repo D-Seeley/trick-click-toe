@@ -8,8 +8,10 @@ module.exports = socketEvents = (socket) => {
   //console.log('[socketHandler] user id is: ', user.id);
 
   socket.on('requestJoin', ({ gameRequest })=> {
-    const { gameId } = handleRequestJoin(gameRequest, user)
+    console.log('gameRequest is, ', gameRequest);
+    const { gameId } = handleRequestJoin(gameRequest, user);
     socket.join(gameId); 
+    console.log('Game Requested: ', gameRequest);
     socket.emit('receiveGame', (gameId));
     //switch on type of game input:
     // - Host New Game - public (create public room)

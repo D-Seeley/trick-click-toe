@@ -1,9 +1,23 @@
 import React from 'react';
+import { Provider } from 'react-redux';
 import ReactDOM from 'react-dom';
+
 import App from './components/App';
-// import {HashRouter as Router} from 'react-router-dom'
+import store from './store';
+import Socket from './socket/socketHandlerClient';
+
+const { socket } = new Socket();
+console.log('SOCKET is: ', socket);
+
+// console.log('Provider is: ', Provider);
+// console.log('Store in index is: ', store);
+// console.log('Store state in index is: ', store.getState());
+
+
 
 ReactDOM.render(
-  <App />,
+  <Provider store={store}>
+    <App />
+  </Provider>,
   document.getElementById('App')
 );

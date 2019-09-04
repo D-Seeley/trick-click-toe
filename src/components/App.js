@@ -1,29 +1,18 @@
 import React, { Component } from 'react';
-// import { HashRouter, Link, Route } from 'react-router-dom';
-import io from '../socket/socketSingleton';
-// const socket = io();
+import { connect } from 'react-redux';
 
 import Game from './Game';
 import JoinGame from './JoinGame';
 import Header from './Header';
 import Footer from './Footer';
 
-export default class App extends Component {
-    constructor() {
-        super()
-        this.state = {
-            gameId: 'none'
-        }
-    }
-
-    componentDidMount() {
-    //     io.on('receiveGame', (gameId)=> {
-    //         this.setState({ gameId })
-    //     })
+class App extends Component {
+    constructor(props) {
+        super(props)
     }
 
     render() {
-        const ActiveView = (this.state.gameId == 'none') ? <JoinGame /> : <Game />
+        const ActiveView = (this.props.gameId == 'none') ? <JoinGame /> : <Game />
 
         return (
             <div>
@@ -34,4 +23,13 @@ export default class App extends Component {
         )
     }
 }
+
+const mapStateToProps = ({ gameId }) => {
+    return {
+        gameId
+    }
+}
+
+export default connect(mapStateToProps)(App)
+
 
