@@ -6,7 +6,7 @@ import App from './components/App';
 import store from './store';
 import Socket from './socket/socketHandlerClient';
 
-const { socket } = new Socket();
+const socket = new Socket();
 console.log('SOCKET is: ', socket);
 
 // console.log('Provider is: ', Provider);

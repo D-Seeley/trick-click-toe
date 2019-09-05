@@ -18,7 +18,7 @@ const addUser = (id) => {
     // console.log('User Created');
     // console.log('id is: ', id);
     // console.log('user.id is: ', user.id)
-
+    console.log(user.id)
     return user;
 
     //   let user = {

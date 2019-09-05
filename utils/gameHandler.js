@@ -1,6 +1,6 @@
 const { Game } = require('./Game');
 const {
-    HOST_PUBLIC_GAME,
+    CREATE_PUBLIC_GAME,
     JOIN_PUBLIC_GAME,
     HOST_PRIVATE_GAME,
     JOIN_PRIVATE_GAME
@@ -17,12 +17,17 @@ const games = [];
 
 //
 
-const handleRequestJoin = (gameRequest, user) => {
-    console.log('gameRequest is, ', gameRequest)
+const handleRequestJoin = ({ type, user }) => {
+    //console.log('gameRequest in handleRequestJoin is, ', type, 'by user id ', user)
+    console.log('gameRequest in handler: ', type, 'which should equal ', CREATE_PUBLIC_GAME);
 
-    switch (gameRequest.type) {
-        case HOST_PUBLIC_GAME:
-            return games.push(new Game(user));
+    switch (type) {
+        case CREATE_PUBLIC_GAME:
+            console.log('Create public game requested');
+            const game = new Game(user);
+            games.push(game);
+            console.log('Game constructed is ', game.gameId);
+            return game;
         case JOIN_PUBLIC_GAME:
             if (games.length == 0) return games.push(new Game(user))
             const openGames = games.filter(game => game.gameOpen);

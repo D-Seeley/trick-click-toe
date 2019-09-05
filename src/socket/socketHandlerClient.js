@@ -1,8 +1,10 @@
 import io from 'socket.io-client';
 // import addSocketEvents from './socketEvents';
-import { dispatch } from '../store';
+import store from '../store';
+import { receiveGame } from '../store';
 
-console.log('io is', io)
+console.log('dispatch is ', store.dispatch)
+console.log('receiveGame is ', receiveGame)
 
 let socket = null;
 // let socket = null;
@@ -12,14 +14,17 @@ class SocketSingleton {
         if (!socket) socket = io();
 
         console.log('conn is ', socket);
+        
+        socket.on('receiveGame', (game) => {
+            console.log('game recieved is ', game);
+            store.dispatch(receiveGame(game.gameId))
+        });
 
         socket.on('connect', ()=> {
-            // socket = _socket;
             console.log('socket is connected, ', socket)
+            //future - sync constants between server and client
 
-            socket.on('receiveGame', (game)=> {
-                dispatch({ gameId: game })
-            });
+       
         })
 
         this.socket = socket;
@@ -30,8 +35,8 @@ class SocketSingleton {
 
 
 export const connectGame = ({ gameRequest }) => {
-    console.log('game requested, socket is: ', socket);
-    socket.emit('requestJoin', gameRequest);
+    console.log('game requested is ', gameRequest, 'socket is: ', socket);
+    socket.emit('requestJoin', { type: gameRequest });
 }
 
 export default SocketSingleton;

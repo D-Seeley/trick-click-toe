@@ -12,6 +12,7 @@ class App extends Component {
     }
 
     render() {
+        console.log('state is, ', this.props);
         const ActiveView = (this.props.gameId == 'none') ? <JoinGame /> : <Game />
 
         return (
