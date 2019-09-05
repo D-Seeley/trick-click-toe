@@ -20,12 +20,12 @@ const games = [];
 const handleRequestJoin = ({ type, user }) => {
     //console.log('gameRequest in handleRequestJoin is, ', type, 'by user id ', user)
     console.log('gameRequest in handler: ', type, 'which should equal ', CREATE_PUBLIC_GAME);
-
     switch (type) {
         case CREATE_PUBLIC_GAME:
             console.log('Create public game requested');
             const game = new Game(user);
             games.push(game);
+            console.log(games);
             console.log('Game constructed is ', game.gameId);
             return game;
         case JOIN_PUBLIC_GAME:

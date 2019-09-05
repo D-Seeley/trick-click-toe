@@ -11,7 +11,12 @@ if (process.env.NODE_ENV === `development`)  middlewares.push(logger);
 
 
 const initialState = {
-  gameId: 'none'
+  gameId: 'none', 
+  players: [],
+  isPrivateGame: false,
+  board: [0,0,0,0,0,0,0,0,0],
+  gameOpen: true,
+  gameOver: false
 };
 
 const RECIEVE_GAME = 'Receive Game';
@@ -31,8 +36,8 @@ export const receiveGame = (game) => {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case RECIEVE_GAME:
-      console.log('Receive Game Reducer Action Called');
-      return {...state, gameId: action.gameId}
+      console.log('Receive Game Reducer Action Called', action);
+      return {...state, gameId: action.data}
       break;
   }
 

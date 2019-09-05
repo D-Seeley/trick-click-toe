@@ -15,11 +15,6 @@ module.exports = socketEvents = (socket) => {
     console.log('Game Created: ', gameId);
     socket.join(gameId); 
     socket.emit('receiveGame', game);
-    //switch on type of game input:
-    // - Host New Game - public (create public room)
-    // - Host New Game - private (create private room)
-    // - Join Random Game
-    // - Join Private Game
   });
 
   //Future Structure
