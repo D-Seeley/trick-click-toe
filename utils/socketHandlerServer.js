@@ -7,15 +7,20 @@ module.exports = socketEvents = (socket, io) => {
   const user = createUser(id);
   let game = null;
 
-  socket.on('requestJoin', ( gameRequest )=> {
-    gameRequest.user = user.id;
-    console.log('gameRequest is, ', gameRequest.type, gameRequest.user);
-    game  = handleRequestJoin(gameRequest);
-    game.userId = user.id;
-    const { gameId } = game;
-    console.log('Game Created: ', game);
-    socket.join(gameId); 
-    socket.emit('receiveGame', game);
+  socket.on('requestJoin', ({ type, input })=> {
+    // gameRequest.user = user.id;
+    // console.log('gameRequest is, ', gameRequest.type, gameRequest.user);
+    game  = handleRequestJoin({ type, input, user });
+    
+    if (game.error) {
+      console.log(game.error)
+    } else {
+      game.userId = user.id;
+      const { gameId } = game;
+      console.log('Game Created: ', game);
+      socket.join(gameId); 
+      socket.emit('receiveGame', game);
+    }
   });
 
   socket.on('clientMove', ({ move })=> {

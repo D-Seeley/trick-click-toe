@@ -18,31 +18,40 @@ const games = [];
 
 //
 
-const handleRequestJoin = ({ type, user }) => {
+const handleRequestJoin = ({ type, userId, gameId }) => {
+    let game = null;
     //console.log('gameRequest in handleRequestJoin is, ', type, 'by user id ', user)
-    console.log('gameRequest in handler: ', type, 'which should equal ', CREATE_PUBLIC_GAME);
+    console.log('gameRequest in handler: ', type, ' from ', userId, ' with gameId: ', (gameId) ? gameId : 'n/a');
     switch (type) {
         case CREATE_PUBLIC_GAME:
-            console.log('Create public game requested');
-            const game = new Game(user);
+            game = new Game(userId);
             games.push(game);
-            console.log(games);
-            console.log('Game constructed is ', game.gameId);
             return game;
+
         case JOIN_PUBLIC_GAME:
-            if (games.length == 0) return games.push(new Game(user))
-            const openGames = games.filter(game => game.gameOpen);
-            console.log('openGames.length is: ', openGames.length);
+            const openGames = games.filter(game => game.gameOpen && !game.isPrivateGame);
+            if (openGames.length == 0) {
+                game = new Game(userId);
+                games.push(game);
+                return game
+            }
             const gameToJoin = openGames[Math.floor(openGames.length * Math.random())];
-            console.log('gameToJoin formula is: ', Math.floor(openGames.length * Math.random()));
-            gameToJoin.addPlayer(user);
+            gameToJoin.addPlayer(userId);
             return gameToJoin;
 
-            break;
         case HOST_PRIVATE_GAME:
-            break;
+            game = new Game(userId, true);
+            games.push(game);
+            return game;
+
         case JOIN_PRIVATE_GAME:
-            break;
+            game = games.filter(game => game.gameId == gameId);
+            if (game.length == 1) {
+                game.addPlayer(userId);
+                return game;
+            } else {
+                return { error: 'game not found'}
+            }
     }
 };
 

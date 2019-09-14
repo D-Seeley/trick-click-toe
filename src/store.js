@@ -11,7 +11,7 @@ const initialState = {
   userId: '',
   gameId: 'none', 
   players: [],
-  isPrivateGame: false,
+  isPrivateGame: null,
   board: [0,0,0,0,0,0,0,0,0],
   gameOpen: true,
   gameOver: false

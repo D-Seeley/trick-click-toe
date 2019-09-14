@@ -12,8 +12,8 @@ class Game {
         this.gameOver = false;
     }
     //Game Logic
-
     addPlayer = user => this.players.push(user);
+
     makeMove = move => { 
         //Using value 3 for testing, eventually make dynamic with this.players.length
         const value = Math.floor(Math.random() * 3);

@@ -34,9 +34,9 @@ class SocketSingleton {
 };
 
 
-export const connectGame = ({ gameRequest }) => {
+export const connectGame = ({ gameRequest, input }) => {
     console.log('game requested is ', gameRequest, 'socket is: ', socket);
-    socket.emit('requestJoin', { type: gameRequest });
+    socket.emit('requestJoin', { type: gameRequest, input });
 }
 
 export const clientMove = (move) => {

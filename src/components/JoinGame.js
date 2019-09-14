@@ -15,15 +15,14 @@ export default class JoinGame extends Component {
         }
     }
 
-    handleUpdate = ev => {
-        this.setState({selection: ev.target.value});
-        console.log('selection is: ', ev.target.value);
-    }
+    handleSelectionUpdate = ev => this.setState({...this.state, selection: ev.target.value});
+
+    handleInputText = ev => this.setState({...this.state, input: ev.target.value})
 
     handleSubmit = ev => {
         ev.preventDefault();
         console.log(this.state);
-        connectGame({ gameRequest: this.state.selection });
+        connectGame({ gameRequest: this.state.selection, input: this.state.input });
 
     }
 
@@ -33,12 +32,17 @@ export default class JoinGame extends Component {
           
             <form onSubmit={this.handleSubmit}>
                 <h2>Choose How To Play</h2>
-                <select onChange={this.handleUpdate}>
+                <select onChange={this.handleSelectionUpdate}>
                     <option value={CREATE_PUBLIC_GAME}>{CREATE_PUBLIC_GAME}</option>
                     <option value={JOIN_PUBLIC_GAME}>{JOIN_PUBLIC_GAME}</option>
                     <option value={HOST_PRIVATE_GAME}>{HOST_PRIVATE_GAME}</option>
                     <option value={JOIN_PRIVATE_GAME}>{JOIN_PRIVATE_GAME}</option>
                 </select>
+                {(this.state.selection == JOIN_PRIVATE_GAME) ? <input 
+                    defaultValue={''} 
+                    name={"input"}
+                    onChange={this.handleInputText}
+                    /> : null }
                 <button>Select</button>
             </form>
             </div>

@@ -7,19 +7,24 @@ class GameDetails extends Component {
     }
 
     render() {
+        const { gameId, isPrivateGame, userId } = this.props; 
         return (
             <div>
-                <p>Game ID is {this.props.gameId}</p>
-                <p>User ID is {this.props.userId}</p>
+                <p>Game ID is {gameId} (Private: {isPrivateGame.toString()})</p>
+                <p>User ID is {userId}</p>
             </div>
         )
 
     }
 }
 
-const mapStateToProps = state => ({
-    gameId: state.gameId,
-    userId: state.userId
-})
+const mapStateToProps = ({ gameId, isPrivateGame, userId }) => {
+    console.log('isPrivateGame is: ', isPrivateGame);
+    return {
+        gameId,
+        userId,
+        isPrivateGame
+    }
+}
 
 export default connect(mapStateToProps)(GameDetails);
