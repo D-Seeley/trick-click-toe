@@ -3,14 +3,12 @@ import thunkMiddleware from 'redux-thunk';
 import logger from 'redux-logger';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-
 const middlewares = [thunkMiddleware];
  
 if (process.env.NODE_ENV === `development`)  middlewares.push(logger);
- 
-
 
 const initialState = {
+  userId: '',
   gameId: 'none', 
   players: [],
   isPrivateGame: false,
@@ -20,15 +18,24 @@ const initialState = {
 };
 
 const RECIEVE_GAME = 'Receive Game';
+const RECIEVE_MOVE = 'Receive Move';
 
 //Actions
-export const receiveGame = (game) => {
+export const receiveGame = game => {
   console.log('receive game action called')
   return {
     type: RECIEVE_GAME, 
     data: game
   }
 }
+
+export const receiveMove = boardUpdate => {
+  return {
+    type: RECIEVE_MOVE,
+    data: boardUpdate
+  }
+}
+
 
 //Thunks
 
@@ -37,8 +44,10 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case RECIEVE_GAME:
       console.log('Receive Game Reducer Action Called', action);
-      return {...state, gameId: action.data}
-      break;
+      return {...state, ...action.data}
+    case RECIEVE_MOVE:
+      console.log('Receive Game Reducer Action Called', action);
+      return {...state, board: action.data}
   }
 
   return state;

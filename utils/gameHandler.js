@@ -1,4 +1,5 @@
 const { Game } = require('./Game');
+
 const {
     CREATE_PUBLIC_GAME,
     JOIN_PUBLIC_GAME,
@@ -31,9 +32,11 @@ const handleRequestJoin = ({ type, user }) => {
         case JOIN_PUBLIC_GAME:
             if (games.length == 0) return games.push(new Game(user))
             const openGames = games.filter(game => game.gameOpen);
-            const gameToJoin = openGames[Math.floor(openGames.lenght * Math.random())];
+            console.log('openGames.length is: ', openGames.length);
+            const gameToJoin = openGames[Math.floor(openGames.length * Math.random())];
+            console.log('gameToJoin formula is: ', Math.floor(openGames.length * Math.random()));
             gameToJoin.addPlayer(user);
-            return game;
+            return gameToJoin;
 
             break;
         case HOST_PRIVATE_GAME:
@@ -41,6 +44,11 @@ const handleRequestJoin = ({ type, user }) => {
         case JOIN_PRIVATE_GAME:
             break;
     }
+};
+
+const handleMove = ({move, user, game}) => {
+    game.moveHistory.push({user, move: game.makeMove(move)});
+    return game.isWinner();
 }
 
-module.exports = { handleRequestJoin }
+module.exports = { handleRequestJoin, handleMove }

@@ -1,30 +1,60 @@
-const { addUser } = require('./userHandler');
-const { handleRequestJoin } = require('./gameHandler');
+const { createUser } = require('./userHandler');
+const { handleRequestJoin, handleMove } = require('./gameHandler');
 
-module.exports = socketEvents = (socket) => {
+module.exports = socketEvents = (socket, io) => {
   const { id } = socket;
   console.log(`${id} joined socket.io`);
-  const userId = addUser(id).id;
-  //console.log('[socketHandler] user id is: ', user.id);
+  const user = createUser(id);
+  let game = null;
 
   socket.on('requestJoin', ( gameRequest )=> {
-    gameRequest.user = userId;
+    gameRequest.user = user.id;
     console.log('gameRequest is, ', gameRequest.type, gameRequest.user);
-    const game  = handleRequestJoin(gameRequest);
+    game  = handleRequestJoin(gameRequest);
+    game.userId = user.id;
     const { gameId } = game;
-    console.log('Game Created: ', gameId);
+    console.log('Game Created: ', game);
     socket.join(gameId); 
     socket.emit('receiveGame', game);
   });
 
-  //Future Structure
-  socket.on('gameMove', ({ move })=> {
-    //Game move from player, pass to gameHandler
-    //Emit response to players from gameHandler
-    
+  socket.on('clientMove', ({ move })=> {
+    const gameEnder = handleMove({move, user, game});
+    if (gameEnder) {
+      io.to(game.gameId).emit('gameOver', game);
+    } else {
+      io.to(game.gameId).emit('gameState', game.board);
+    }
   })
-
+}
   
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
   //addUser(id);
@@ -100,4 +130,3 @@ module.exports = socketEvents = (socket) => {
   //     }
   //     console.log('Goodbye, ', socket.id, ' :(');
   //   });
-}

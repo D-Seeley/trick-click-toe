@@ -13,7 +13,7 @@ app.use(express.static(path.join(__dirname, './public')));
 app.get('/', (req, res, next)=> res.sendfile(path.join(__dirname, 'public', 'index.htm')));
 
 //Socket.Io connection handler
-io.on('connection', socketHandler);
+io.on('connection', socket => socketHandler(socket, io));
 
 
 server.listen(port);

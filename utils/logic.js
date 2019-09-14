@@ -1,4 +1,4 @@
-export default function solve(board) {
+module.exports = (board) => {
     const rowCount = Math.sqrt(board.length)
     const columnCount = rowCount;
     console.log(columnCount);
@@ -52,4 +52,3 @@ export default function solve(board) {
 
     return false;
   }
-  
