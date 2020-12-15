@@ -7,7 +7,7 @@
     "@babel/polyfill": "^7.4.4",
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
-    "ecstatic": "^4.1.2",
+    "ecstatic": "^4.1.4",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
     "peer": "^0.2.10",
