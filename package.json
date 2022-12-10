@@ -8,7 +8,7 @@
     "babel": "^6.23.0",
     "babel-cli": "^6.26.0",
     "ecstatic": "^4.1.2",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "fs": "0.0.1-security",
     "peer": "^0.2.10",
     "pg": "^7.12.1",
